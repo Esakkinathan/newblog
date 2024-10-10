@@ -1,0 +1,40 @@
+{%extends 'base.html' %}
+{% block content%}
+<br/>
+<h1 class="articleTitle">{{cats}}</h1>
+<br>
+   {%if category_posts %}
+   <article id="postContainer">
+    {% for post in category_posts %}
+        <section class="postContent">
+            <a href="{% url 'article_detail' post.pk %}" class="postLink">
+                <div class="postTitleBody">
+                    <div class="postTitle">    
+                        <h1>{{post.title}}</h1>
+                    </div>
+                    <div class="postcontents">
+                        <p>{{ post.body|truncatewords_html:30|safe }}</p>
+                    </div>
+                </div>
+            </a>
+            <div class="postnext">
+                <div class="postcatTag">
+                    <a href="{% url 'category' post.category|slugify %}">Category: {{post.category}}</a>
+                </div>
+                <div class="postbyTag">
+                    <p>{{post.author.first_name}}  {{post.author.last_name}} <br/>{{post.post_date}}</p>
+                </div>
+            </div>
+        </section>
+    {%endfor%}
+</article>
+    {% else %}
+    <h2 class="cmtHead">No posts in {{cats}}</h2>
+    <br><br>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <center><a class="myButton" style="text-decoration: none;" href="{% url 'add_category' %}">Add Category</a></center>
+    </a>
+    {% endif %}
+{% endblock %}
+

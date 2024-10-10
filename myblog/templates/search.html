@@ -1,0 +1,79 @@
+{%extends 'base.html'%}
+{% load static %}
+
+{% block content%}
+<br>
+<div class="searchContainer">
+
+<form role="search" method=POST action="{% url 'search_box'%}">
+    {% csrf_token %}
+    <center>
+    <input type="text" placeholder="Search" aria-label="Search" name="searched" required>
+    <br><br>
+    <button class="myButton" type="submit">Search</button></center>
+</form>
+<br>
+<div class="tabContainer">
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Posts')" id="defaultOpen">Posts</button>
+        <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
+    </div>
+
+    <div id="Posts" class="tabcontent">
+        <br>
+        {% if posts %}
+        <article id="postContainer">
+            {% for post in posts %}
+                <section class="postContent">
+                    <a href="{% url 'article_detail' post.pk %}" class="postLink">
+                        <div class="postTitleBody">
+                            <div class="postTitle">    
+                                <h1>{{post.title}}</h1>
+                            </div>
+                            <div class="postcontents">
+                                <p>{{ post.body|truncatewords_html:30|safe }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="postnext">
+                        <div class="postcatTag">
+                            <a href="{% url 'category' post.category|slugify %}">Category: {{post.category}}</a>
+                        </div>
+                        <div class="postbyTag">
+                            <p>{{post.author.first_name}}  {{post.author.last_name}} <br/>{{post.post_date}}</p>
+                        </div>
+                    </div>
+                </section>
+            {%endfor%}
+        </article>
+            {% else %}
+                <h3 class="cmtHead">No posts in <q>{{searched}}</q></h3>
+            {%endif%}
+    </div>
+
+    <div id="Users" class="tabcontent">
+        <br>
+            {% if users%}
+                {% for s_user in users %}
+                <a style="text-decoration: none;" href="{% url 'show_profile' s_user.profile.id %}">
+                    <div class="profileGo">
+                        <figure class="profileIcon">
+                            {% if s_user.profile.profile_pic %}
+                                <img src="{{s_user.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture" >
+                            {%else%}
+                                <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture" >
+                            {%endif%}
+                        </figure>
+                        <p>{{s_user.first_name}} {{s_user.last_name}}<br/><span class="profileUsername">@{{s_user.username}}</span></p>
+                    </div>
+                </a>
+                    <br>
+                {% endfor %}
+                {% else %}
+                <h3 class="cmtHead">No users in <q>{{searched}}</q></h3>
+            {%endif%}
+    </div>
+</div>
+</div>
+<script src="{% static 'script.js' %}"></script>
+{%endblock%}

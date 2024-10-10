@@ -1,0 +1,36 @@
+
+{%extends 'base.html' %}
+{% block content%}
+<br/><br/>
+<div class="formCont">
+{% if user.is_authenticated %}
+  {% if user.id == profile.user.id%}  
+    <h1 class="articleTitle">Edit profile</h1>
+    <br/>
+    <center>
+    
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {{form.as_p}}
+            <br>
+            <button class = "myButton">Update</button>
+            <script>
+                // Wrap the specific text in a <span> element
+                const label = document.querySelector('label[for="id_bio"]');
+                const labelText = label.textContent;
+                label.innerHTML = labelText.replace('Add your Bio (required)', 'Add your bio <span style="color:red;" class="highlight">(required)</span>');
+            </script>
+        </form>
+    </div>
+    <br><br><br>
+    </center>
+    {% else %}
+        <br><br>
+        <h3 class="blogHead">You are not allowed to this page (sorry....)</h3>
+    {% endif %}
+    {% else %}
+        <br><br>
+        <h3 class="blogHead">You are not allowed to this page (sorry....)</h3>
+    {% endif %}
+{% endblock %}

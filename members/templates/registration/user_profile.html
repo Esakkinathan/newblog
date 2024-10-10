@@ -1,0 +1,119 @@
+{%extends 'base.html' %}
+{% load static %}
+{%block title%}
+
+{{page_user.user.first_name}} {{page_user.user.last_name}}
+{% endblock %}
+{% block content%}
+<br><br>
+<h1 class="articleTitle">Hello {{page_user.user.first_name}} {{page_user.user.last_name}}</h1>
+
+<article class="userProfile">          
+          <br><br>
+        <figure class="profileImage">
+            {% if user.id == page_user.user.id %}
+            <div class="menu-container">
+                <button class="menu-button" onclick="toggleMenu()">⋮</button>
+                <div id="myDropdown" class="dropdown-content">
+                  <a href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile</a>
+                  <a href="{% url 'edit_profile' %}">Edit Settings</a>
+                </div>
+              </div>
+              {% endif %}
+            {% if page_user.profile_pic %}
+                <a href="{{page_user.profile_pic.url}}"><img src="{{page_user.profile_pic.url}}" class="profilePicture" alt="Profile Image"></a>
+            {%else%}
+                <img src="{%static 'myblog/images/profile.png'%}" class="profilePicture" alt="Profile Image">
+            {%endif%}
+            <figcaption>
+                {% if page_user.bio%}
+                <p  id="profileBio">{{page_user.bio}}</p>
+                {%endif%}
+            </figcaption>
+        </figure>
+    </div>
+    <br><br>
+    <div class="tabContainer">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Users')" id="defaultOpen">User</button>
+            <button class="tablinks" onclick="openTab(event, 'Posts')">Posts</button>
+        </div>
+        <div id="Users" class="tabcontent">
+            <br><br>
+            <article class="profileContainer">
+                <p> Username: @{{page_user.user.username}}</p>
+                <p> Date Joined : {{page_user.user.date_joined|date:"M d, Y"}}</p>
+                <p> Last Login : {{ page_user.user.last_login|date:"F j, Y g:i a" }}</p>
+                {% if user.id == page_user.user.id %}
+                <p> Maild-id: @{{page_user.user.email}}</p>
+                {%endif%}
+                <p class="profileUrl">
+                  {% if page_user.web_url%}
+                  <a href="{{page_user.web_url}}" target="_blank"><i class="fa-brands fa-google" style="color: #c5221f;"></i></a>
+                  {%endif%}
+                  {% if page_user.facebook_url%}
+                  <a href="{{page_user.facebook_url}}" target="_blank"><i class="fa-brands fa-facebook" style="color: #3b5998;"></i></a>
+                  {%endif%}
+                  {% if page_user.instagram_url%}
+                  <a href="{{page_user.instagram_url}}" target="_blank"><i class="fa-brands fa-instagram" style="color:  #ac2bac;"></i></a>
+                  {%endif%}
+                  {% if page_user.twitter_url%}
+                  <a href="{{page_user.twitter_url}}" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                  {%endif%}
+                  {% if page_user.github_url%}
+                  <a href="{{page_user.github_url}}" target="_blank"><i class="fa-brands fa-github" style="color: #dd4b39;"></i></a>
+                  {%endif%}
+                  {% if page_user.linkedin_url%}
+                  <a href="{{page_user.linkedin_url}}" target="_blank"><i class="fa-brands fa-linkedin-in" style="color: #007bb5"></i></a>
+                  {%endif%}
+                  </p>
+          </article>
+        </div>
+        <div id="Posts" class="tabcontent">
+            <br><br>
+            {% if posts %}
+        <article id="postContainer">
+            {% for post in posts %}
+                <section class="postContent">
+                    <a href="{% url 'article_detail' post.id %}" class="postLink">
+                        <div class="postTitleBody">
+                            <div class="postTitle">    
+                                <h1>{{post.title}}</h1>
+                            </div>
+                            <div class="postcontents">
+                                <p>{{ post.body|truncatewords_html:30|safe }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="postnext">
+                        <div class="postcatTag">
+                            <a href="{% url 'category' post.category|slugify %}">Category: {{post.category}}</a>
+                        </div>
+                        <div class="postbyTag">
+                            <p>{{post.author.first_name}}  {{post.author.last_name}} <br/>{{post.post_date}}</p>
+                        </div>
+                    </div>
+                </section>
+            {%endfor%}
+        </article>
+        {% else %}
+        <h3 class="cmtHead"> No Post Yet....</h3>
+        {%endif%}
+
+        </div>
+    </div>
+</article>
+<br><br>
+{%if user.is_authenticated%}
+<center>
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="myButton" >Logout</button>
+</form>
+</center>
+
+{%endif %}
+<br><br><br><br>
+<script src="{% static 'script.js' %}"></script>
+
+{% endblock %}

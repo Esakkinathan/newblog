@@ -1,0 +1,81 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block title %}
+ hello
+{% endblock %}
+
+{% block content%}
+    <br><br><br><br>
+    {% if searched %}
+    <h1 class="blogHead">you seached for <q>{{searched}}</q>
+    </h1>
+    <center>
+    <ul class="nav nav-tabs bg-dark text-light justify-content-center" id="myTab" role="tablist" style="width: 100%; ">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active bg-dark text-light" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Posts</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link bg-dark text-light" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Users</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent" style="width: 100%; ">
+        <br>
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            {% if posts%}
+                {% for post in posts %}
+                    <section class="postContent">
+                        <div class="postTitleconatiner">
+                            <a class="postTitle" href="{% url 'article_detail' post.pk %}">
+                                <strong style="color: white;">
+                                    {{post.title}}
+                                </strong>
+                            </a>
+                        </div>
+                        <div class="postContBody">
+                            <div class="postcontents">
+                                {{ post.body|truncatewords_html:30|safe }}
+                            </div>
+                            <div class="postcatTag">
+                                <a href="{% url 'category' post.category|slugify %}">Category: {{post.category}}</a>
+                            </div>
+                            <div class="postbyTag">
+                                <p>{{post.author.first_name}}  {{post.author.last_name}} {{post.post_date}} </p>
+                            </div>
+                        </div>
+                    </section>
+                {% endfor %}
+            {% else %}
+                <h3 class="blogHead">No posts in <q>{{searched}}</q></h3>
+            {%endif%}
+        </div>
+
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <br>
+            {% if users%}
+                {% for s_user in users %}
+                    <a style="text-decoration: none;" href="{% url 'show_profile' s_user.profile.id %}">
+                        <div class="profileGo">
+                            <figure class="profileIcon">
+                                {% if s_user.profile.profile_pic %}
+                                    <img src="{{s_user.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture"  >
+                                {%else%}
+                                    <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture" >
+                                {%endif%}
+                            </figure>
+                            <p>{{s_user.first_name}} {{s_user.last_name}}<br>@{{s_user.username}}</p>
+
+                        </div>
+                    </a>
+                    <br>
+                {% endfor %}
+            {% else %}
+                <h3 class="blogHead">No users in <q>{{searched}}</q></h3>
+            {%endif%}
+        </div>
+    </div>
+    </center>
+    {% else %}
+    <h2 class="blogHead">Searched nothing</h2>
+    {% endif%}
+{% endblock %}

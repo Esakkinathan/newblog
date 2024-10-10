@@ -1,0 +1,15 @@
+{% extends 'loginBase.html' %}
+
+{%block content%}
+<br><br><br><br>
+<div class="LoginForm">
+
+    <h1 class="articleTitle">Verify OTP</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><button type="submit" class="myButton">Verify OTP</button></p>
+    </form>
+</div>
+{% endblock %}

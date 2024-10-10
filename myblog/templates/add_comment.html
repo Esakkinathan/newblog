@@ -1,0 +1,25 @@
+
+{%extends 'base.html' %}
+{% block content%}
+<br/><br/><br/>
+{% if user.is_authenticated %}
+    <h1> Add a Comment....</h1>
+    
+    <br/><br/>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.media}}
+            {{form.as_p}}
+            <script>
+                
+                document.getElementById("comment_name").value="{{user.first_name}} {{user.last_name}}";
+            </script>
+            <br>
+            <button class = "btn btn-dark">Add comment</button>
+        </form>
+    </div>
+    {% else %}
+        <h3>You are not allowed to this page (sorry....)</h3>
+    {% endif %}
+{% endblock %}

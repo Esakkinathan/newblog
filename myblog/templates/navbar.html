@@ -1,0 +1,88 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">Blog Application</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_post' %}">Create a Post</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_category' %}">Add Category</a>
+            </li>
+            <!-- {%if cat_menu %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Category
+                </a>
+                <ul class="dropdown-menu">
+                  {% for item in cat_menu%}
+                  <li><a class="dropdown-item" href="{% url 'category' item|slugify %}">{{item}}</a></li>
+                  {% endfor %}
+                </ul>              
+              </li>
+            {%else%}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'category_list' %}">Category</a>
+              </li>
+            {%endif%}  -->
+            
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link btn btn-primary" href="{% url 'register' %}">Register</a>
+            </li> 
+            <li class="nav-item">
+              <a class="nav-link btn btn-success" href="{% url 'login' %}">Login</a>
+            </li>
+          {% endif %}
+          
+        </ul>
+        {% if user.is_authenticated%}
+
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Settings</a></li>
+              {% if user.profile.id %}
+                <li><a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.id %}">Show Profile </a></li>
+                {%else%}
+                <li><a class="dropdown-item" href="{% url 'create_profile_page' %}">Create Profile </a></li>
+              {% endif %}
+              <li><a class="dropdown-item btn btn-warning" href="{% url 'logout' %}">Logout</a></li>
+            </ul>              
+          </li> -->
+          <li class="nav-item">
+
+            <a class="nav-link d-flex flex-row" href="{% url 'show_profile' user.profile.id %}">
+              
+              <figure class="profileIcon">
+                {% if user.profile.profile_pic %}
+                    <img src="{{user.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture" width="50" height="50" >
+                {%else%}
+                    <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture" width="50" height="50">
+                {%endif%}
+            </figure>
+            <p>{{user.first_name}} {{user.last_name}}</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="dropdown-item btn btn-danger" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+        {% endif %}
+      </div>
+      <form class="d-flex" role="search" method=POST action="{% url 'search_box' %}">
+        {% csrf_token %}
+        <input class="form-control me-2 bg-dark text-light" type="search" placeholder="Search" aria-label="Search" name="searched" required>
+        <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>

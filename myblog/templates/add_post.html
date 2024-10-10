@@ -1,0 +1,35 @@
+
+{%extends 'base.html' %}
+{% block content%}
+<br/>
+<div class="formCont">
+{% if user.is_authenticated %}
+    
+    <h1 class="articleTitle">Create blog</h1>
+    <br>
+    <center>
+    <div class="postForm">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media}}
+            {{form.as_p}}
+            <br>
+            <button class = "myButton">Post</button>
+            
+        </form>
+    </div>
+    <br><br><br>
+    <p id="showArea"></p>
+    </center>
+    <script>
+        var name = "{{user.id}}";
+        document.getElementById("author_field").value=name;
+        document.getElementById("author_field").setAttribute('readonly', true);
+    </script>
+    {% else %}
+        <br>
+        <h3 class="cmtHead">You are not allowed to this page (sorry....)</h3>
+        <p class="cmtHead">Please Login to create blog</p>
+    {% endif %}
+</div>
+{% endblock %}

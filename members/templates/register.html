@@ -1,0 +1,32 @@
+{% extends 'loginBase.html' %}
+{% load static %}
+{% load socialaccount %}
+{%block title%}
+Register
+{% endblock %}
+{%block content%}
+<br><br>
+<div class="RegForm">
+    <h1 class="articleTitle">Register</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><button class="myButton" type="submit">Register</button></p>
+        <br>
+    </form>
+    <p>Alread have an account <a href="{% url 'login' %}">Login</a></p>
+    <br>
+    <a href="{% provider_login_url 'google'%}?next=/" style="text-decoration: none;"><p  class="google">Continue with  Google &nbsp;<i class="fa-brands fa-google" style="color: rgb(243, 58, 106);"></i></p></a>
+    <br>
+    <script src="{% static 'script.js' %}"></script>
+</div>
+<script>
+    var ulElement = document.getElementById('id_password1_helptext');
+    var liElements = ulElement.getElementsByTagName('li');
+    for (var i = 0; i < liElements.length; i++) {
+        liElements[i].style.display = 'none';
+    }
+</script>
+{% endblock %}
+

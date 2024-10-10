@@ -1,0 +1,22 @@
+
+{%extends 'base.html' %}
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block content%}
+    <br>
+<div class="catContainer">
+ <h1 class="articleTitle">Blog Categories</h1>
+ <br><br>
+     <table class="myTable">
+        {% for item in cat_menu_list%}
+                <tr onclick= "window.location='{% url 'category' item|slugify %}'"><td>{{item}}</td></tr>
+        {% endfor %}
+    </table>
+    <br><br>
+    {% if user.is_authenticated %}
+            <center><a class="myButton" style="text-decoration: none;" href="{% url 'add_category' %}">Add Category</a></center>
+    {% endif %}
+</div>
+{% endblock %}

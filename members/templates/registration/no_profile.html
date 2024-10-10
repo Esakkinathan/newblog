@@ -1,0 +1,16 @@
+{%extends 'base.html' %}
+{% block content%}
+
+<br><br><br>
+<center>
+    {% if not user.is_authenticated %}
+    <p class="cmtHead">You have't logged into to page</p>
+    <p class="cmtHead">please clcik here to login and register</p>
+    <br>
+    <a href="{% url 'login' %}" class="myButton" style="text-decoration: none;">Login</a>
+    <br><br><br>
+    <a href="{% url 'register' %}" class="myButton" style="text-decoration: none;">Register</a>
+    {% endif %}
+
+</center>
+{% endblock %}

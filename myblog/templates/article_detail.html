@@ -1,0 +1,171 @@
+
+{%extends 'base.html' %}
+{% load static %}
+{% block title%}
+      {{post.title}}
+{% endblock %}
+{% block content%}
+    <h1 class="articleTitle">{{post.title}}</h1>
+    <article id="articleContainer">
+        <section id="articleContent">
+            <a style="text-decoration: none;" href="{% url 'show_profile' post.author.profile.id %}">
+                <div class="profileGo">
+                    <figure class="profileIcon">
+                        {% if post.author.profile.profile_pic %}
+                            <img src="{{post.author.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture" >
+                        {%else%}
+                            <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture" >
+                        {%endif%}
+                    </figure>
+                    <p>{{post.author.first_name}} {{post.author.last_name}}<br/><span class="profileUsername">@{{post.author.username}}</span></p>
+                </div>
+            </a>
+            <div class="articleBody">
+                {{post.body|safe}}
+            </div>
+        </section>
+        <br>
+        
+        {% if post.header_image%}
+        <center>
+            <a href="{{post.header_image.url}}">
+            <figure id="postImg">
+              <img src="{{post.header_image.url}}" alt="post_image" id="dynamicImage" loading="lazy" width="300" height="400">
+            </figure>
+            </a>
+        </center>
+        {% endif %}
+        <div class="articatTag">
+            <a href="{% url 'category' post.category|slugify %}" >
+                Category : {{post.category}}
+            </a>
+        </div>
+        <div id="postUpdate">
+            {% if user.is_authenticated %}
+                <form action = "{% url 'like_post' post.pk %}" method = "POST">
+                    {% csrf_token %}
+                    {% if liked %}
+
+                        <button type="submit" id="likeBtn" name="post_id" value ="{{post.id}}"><i class="fa-solid fa-heart"  style="color:red;"></i> <span>{{total_likes}}</span></button>
+                    {% else %}
+                        <button type="submit" id="likeBtn" name="post_id" value ="{{post.id}}"><i class="fa-regular fa-heart"></i><span>{{total_likes}}</span></button>
+
+                    {% endif %}
+                </form>
+                {% if user.id == post.author.id %}
+                    <div class="edup" ><a href="{% url 'update_post' post.pk %}" ><i class="fa-solid fa-pen-to-square" style="color: rgb(243, 58, 106);"></i></a></div>
+                    <div class="edup"><a href="{% url 'delete_post' post.pk %}"><i class="fa-solid fa-trash" style="color: rgb(243, 58, 106);"></i></a></div>
+                {% endif %}
+                {% else %}
+                    <i id="likeBtn" class="fa-regular fa-heart"> <span>{{total_likes}}</span></i>
+                {% endif %}
+                <p>{{post.post_date}}</p>
+        </div>
+        {%if user.is_authenticated%}
+        <details>
+            <summary>
+                See who liked
+            </summary>
+            <div id="likeSee" class="likesContainer">
+                {%for like_user in post.likes.all%}
+                <a style="text-decoration: none;" href="{% url 'show_profile' like_user.profile.id %}">
+                    <div class="profileGo">
+                        <figure class="profileIcon">
+                            {% if like_user.profile.profile_pic %}
+                                <img src="{{like_user.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture" >
+                            {%else%}
+                                <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture" >
+                            {%endif%}
+                        </figure>
+                        <p>{{like_user.first_name}} {{like_user.last_name}}<br/><span class="profileUsername">@{{like_user.username}}</span></p>
+                    </div>
+                    {% empty %}
+                        <p class="blogHead">No one has liked this post yet.</p>
+                {%endfor%}
+            </div>        
+        </details>
+
+        {% endif %}
+      <section class="commentSection">
+          <h3 class="cmtHead">Comments..</h3><br>
+          {% if user.is_authenticated %}
+              <div id="commentform">
+                  <form action="{% url 'add_comment' %}" method=POST >
+                      {% csrf_token %}
+                      <input type="text" name="postname" id="postName" class="form-control" placeholder="name" hidden>
+                      <input type="text" name="commentname" id="commentName" class="form-control" placeholder="name" hidden >
+                      <textarea name="commentbody" id="commentArea" placeholder="Add comment here" required ></textarea>
+                      <br>
+                      <center>
+                            <button type="submit" class="myButton">Submit</button>    
+                            
+                      </center>
+
+                      <script>
+                        var name = "{{user.id}}";
+                        var pname= "{{post.pk}}"
+                        document.getElementById("commentName").value=name;
+                        document.getElementById("postName").value=pname;
+                        document.getElementById("author_field").setAttribute('hidden', true);
+                      </script>
+                  </form>
+              </div>
+              <br>
+          {% endif %}
+          {% if not post.comments.all%}
+              <h3 class="cmtHead" style="font-size: 1rem;">No comments yet</h3><br>
+          {% else %}
+              {% for comment in post.comments.all%}
+                  <div class="comments">
+                    <a style="text-decoration: none;" href="{% url 'show_profile' comment.name.profile.id %}">
+                      <div class="profileGo">
+                          <figure class="profileIcon">
+                              {% if comment.name.profile.profile_pic %}
+                                  <img src="{{comment.name.profile.profile_pic.url}}"  class="rounded-circle" alt="Profile picture" >
+                              {%else%}
+                                  <img src="{%static 'myblog/images/profile.png'%}"  class="rounded-circle" alt="Profile picture">
+                              {%endif%}
+                          </figure>
+                          <p>{{comment.name.first_name}} {{comment.name.last_name}}<br><span class="profileUsername">@{{comment.name.username}}</span></p>
+                      </div>
+                    </a>
+                      <div class="commentBody">
+                          {{comment.body}}
+                      </div>
+                      <div class="cmtOption">
+                        {% if user.id == comment.name.id %}
+                            <a href="{% url 'delete_comment' comment.id %}"><i class="fa-solid fa-trash" style="color: rgb(243, 58, 106);"></i></a>
+                        {%endif%}
+                      <p>{{comment.date_added}}</p>
+                    </div>
+                    </div>
+              {% endfor %}
+          {% endif %}
+      </section>
+    </article>
+    <br/><br/>
+
+    <script>
+        const image = document.getElementById('dynamicImage');
+        const cont = document.getElementById('articleContainer');
+        // Example: Set image width to 50% of window width and height to 300px
+        function resizeImage() {
+            const windowWidth = cont.width;
+            const calculatedWidth = windowWidth * 0.8;
+            const calculatedHeight = 400; // fixed height
+
+            image.style.width = `${calculatedWidth}px`;
+            image.style.height = `${calculatedHeight}px`;
+        }
+
+        // Call the function to resize the image
+        resizeImage();
+
+        // Optional: Resize image on window resize
+        window.addEventListener('resize', resizeImage);
+    </script>
+{% endblock %}
+
+
+
+

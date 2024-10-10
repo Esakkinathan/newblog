@@ -1,0 +1,25 @@
+
+{%extends 'base.html' %}
+{% block content%}
+<br/><br><br><br>
+{% if user.is_authenticated %}
+{% if user.id == post.author.id %}
+    <h1 class="articleTitle">Delete blog</h1>
+
+    <h3 class="articleTitle">Title: {{post.title}}</h3><br/><br/>
+    <center>
+    <div class="postForm">
+        <form method="POST">
+            {% csrf_token %}
+                <strong>Are you sure?</strong>
+                <button class = "myButton">Delete</button>
+        </form>
+    </div>
+    </center>
+    {% else %}
+    <h3>You don't have access to this page (sorry....)</h3>
+    {% endif %}
+    {% else %}
+    <h3>You don't have access to this page (sorry....)</h3>
+    {% endif %}
+{% endblock %}

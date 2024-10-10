@@ -1,0 +1,30 @@
+
+{%extends 'base.html' %}
+{% block content%}
+    <br/><br/><br/><br>
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+            <h1 class="articleTitle">Update Blog</h1>
+            <br/><br/>
+            <center>
+                <div class="postForm" >
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.media}}
+                        {{form.as_p}}
+                        <br>
+                        <button class ="myButton">Update</button>
+                    </form>
+                    <br><br>
+        <br><br><br><br>
+                </div>
+            </center>
+            {% else %}
+            <br><br>
+                <h3 class="blogHead">You don't have access to this page (sorry....)</h3>
+        {% endif %}
+        {% else %}
+        
+            <h3 class="blogHead">You don't have access to this page (sorry....)</h3>
+        {% endif %}
+{% endblock %}

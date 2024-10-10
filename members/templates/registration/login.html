@@ -1,0 +1,22 @@
+{% extends 'loginBase.html' %}
+{% load static %}
+{% load socialaccount %}
+{%block content%}
+<br><br>
+<div class="LoginForm">
+    <h1 class="articleTitle">Login</h1>
+    <br> 
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><button class="myButton" type="submit">Login</button></p>
+    </form>
+    <br>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+    <br>
+    <a href="{% provider_login_url 'google'%}?next=/" style="text-decoration: none;"><p  class="google">Continue with  Google &nbsp;<i class="fa-brands fa-google" style="color: rgb(243, 58, 106);"></i></p></a>
+<br>
+</div>
+    <script src="{% static 'script.js' %}"></script>
+
+{% endblock %}

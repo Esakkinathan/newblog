@@ -1,0 +1,84 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title%}
+            heyBlog
+        {% endblock %}
+      </title>
+      <script src="https://kit.fontawesome.com/30fecdcfd1.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+      <link rel='stylesheet' href="{% static 'myblog/css/style.css' %}">
+
+  </head>
+  <body>
+  <header>
+    <!-- <img src="{% static 'myblog/images/heyblog.png'%}" alt="logo" width="180px" height="50px"> -->
+     <p id="app-title">!heyBlog</p>
+     {%if not user.is_authenticated%}
+     <a href="{% url 'login' %}" class="logBut" style="text-decoration: none;">Login</a>
+     {%endif%}
+  </header>
+  <!-- <div id="toast-container">
+    {% if messages %}
+            <div class="toast">
+                <span>{{ messages }}</span>
+                <button class="close-btn" onclick="closeToast()">&times;</button>
+            </div>
+    {% endif %}
+</div> -->
+
+      <nav class="lap-navigation">
+        <div class="lap-nav-section">
+        <!-- Navigation content goes here -->
+          <a class = "nav-item" href="{% url 'home'%}"><i class="fa-solid fa-house icon"></i>&nbsp;&nbsp;Home</a>
+          <a class = "nav-item" href="{% url 'search_box'%}"><i class="fa-solid fa-magnifying-glass icon"></i>&nbsp;&nbsp;Search</a>
+          <a class = "nav-item" href="{% url 'add_post'%}"><i class="fa-solid fa-circle-plus icon"></i>&nbsp;&nbsp;Add Post</a>
+          <a class = "nav-item" href="{% url 'category_list' %}"><i class="fa-solid fa-list icon"></i>&nbsp;&nbsp;Category</a>
+          {%if user.is_authenticated%}
+          <a class = "nav-item" href="{% url 'show_profile' user.profile.id %}"><i class="fa-solid fa-user icon"></i>&nbsp;&nbsp;Profile</a>
+          {%else%}
+          <a class = "nav-item" href="{% url 'no_profile' %}"><i class="fa-solid fa-user icon">&nbsp;&nbsp;</i>Profile</a>
+          {%endif%}
+        </div>
+      </nav>
+      <nav class="tab-navigation">
+        <div class="tab-nav-section">
+        <!-- Navigation content goes here -->
+          <a class = "nav-item" href="{% url 'home'%}"><i class="fa-solid fa-house icon"></i></a>
+          <a class = "nav-item" href="{% url 'search_box'%}"><i class="fa-solid fa-magnifying-glass icon"></i></a>
+          <a class = "nav-item" href="{% url 'add_post'%}"><i class="fa-solid fa-circle-plus icon"></i></a>
+          <a class = "nav-item" href="{% url 'category_list' %}"><i class="fa-solid fa-list icon"></i></a>
+          {%if user.is_authenticated%}
+          <a class = "nav-item" href="{% url 'show_profile' user.profile.id %}"><i class="fa-solid fa-user icon"></i></a>
+          {%else%}
+          <a class = "nav-item" href="{% url 'no_profile' %}"><i class="fa-solid fa-user icon"></i></a>
+          {%endif%}
+        </div>
+      </nav>
+      <main class="content">
+        {% block content%}
+
+
+        {% endblock %}
+      </main>
+    <footer>
+      <section id="footer-section">
+        <a href="{% url 'home'%}"><i class="fa-solid fa-house icon"></i></a>
+        <a href="{% url 'search_box'%}"><i class="fa-solid fa-magnifying-glass icon"></i></a>
+        <a href="{% url 'add_post'%}"><i class="fa-solid fa-circle-plus icon"></i></a>
+        <a href="{% url 'category_list' %}"><i class="fa-solid fa-list icon"></i></a>
+        {%if user.is_authenticated%}
+        <a href="{% url 'show_profile' user.profile.id %}"><i class="fa-solid fa-user icon"></i></a>
+        {%else%}
+        <a href="{% url 'no_profile' %}"><i class="fa-solid fa-user icon"></i></a>
+        {%endif%}
+
+      </section>
+    </footer>
+  </body>
+</html>
