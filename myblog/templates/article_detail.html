@@ -87,7 +87,7 @@
 
         {% endif %}
       <section class="commentSection">
-          <h3 class="cmtHead">Comments..</h3><br>
+          <h3 class="cmtHead" style="font-size: 1.2rem;">Comments..</h3><br>
           {% if user.is_authenticated %}
               <div id="commentform">
                   <form action="{% url 'add_comment' %}" method=POST >

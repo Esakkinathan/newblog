@@ -20,7 +20,7 @@ class PostForm(ModelForm):
             'title' : forms.TextInput(attrs={'placeholder':'Title of Blog'}),
             'author' : forms.TextInput(attrs={'value':'','type':'hidden','id':'author_field'}),
             'category' : forms.Select(choices=choice_list), 
-            'body': TinyMCE(attrs={'cols': 60, 'rows': 30}),
+            'body' : forms.Textarea(),
         }
 
 
