@@ -3,13 +3,20 @@
 {% load static %}
 {% block content%}
 <br/><br/>
+<style>
+    form > p{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 {% if user.is_authenticated %}
 <div class="CreateUSerForm">
     <h1 class="articleTitle">Create Profile</h1>
     <br/>
     
 
-    <center>
         {% if not user.profile.id %}
             <p class="cmtHead" style="font-size: 1rem;">You must create your profile</p>
         {%endif%}
@@ -19,7 +26,9 @@
             {{form.media}}
             {{form.as_p}}
             <br>
-            <button type="submit" class = "myButton">Create</button>
+            <center>
+
+            <button type="submit" class = "myButton">Create</button><br><br>
             <script>
                 // Wrap the specific text in a <span> element
                 const label = document.querySelector('label[for="id_bio"]');

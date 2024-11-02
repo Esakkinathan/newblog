@@ -2,20 +2,28 @@
 {% block title%}Edit Settings{%endblock%}
 {% block content%}
 <br><br>
+<style>
+    form > p{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+</style>
 <div class="LoginForm">
     <h1 class="articleTitle">Edit Settings</h1>
     <br/>
-    <center>
-            <form method="POST">
+            <form method="POST" class="edit_profile">
                 {% csrf_token %}
                 {{form.as_p}}
                 <br>
+                <center>
                 <a href = "{% url 'password_change' %}" class="myButton" style="text-decoration: none;">Change Password</a>
                 <br/><br><br>
                 <button class = "myButton">Update </button>
-                
+            </center>
             </form>
         </div>
-    </center>
     <br/><br/><br/><br/>
 {% endblock %}
