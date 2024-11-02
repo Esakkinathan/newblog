@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ue1*80&$e7u8l!86+wjeue(uawn0o9_vvl3f#o1ot&(g-!la_8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["esakkinathan.pythonanywhere.com/"]
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
